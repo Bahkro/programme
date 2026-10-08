@@ -58,33 +58,53 @@
 </head>
 <body class="bg-brand-bgLight text-slate-800 antialiased min-h-full flex flex-col pb-20">
 
+  <!-- Admin Bar (Affiche si mode admin actif) -->
+  <div id="adminBanner" class="hidden bg-slate-900 text-white text-xs py-2 px-4 sticky top-0 z-50 flex items-center justify-between border-b border-amber-500">
+    <div class="flex items-center gap-2 font-bold text-amber-400">
+      <i class="fa-solid fa-user-shield"></i>
+      <span>Mode Administration Actif</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="openManageDaysModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-2.5 py-1 rounded text-[11px]">
+        <i class="fa-solid fa-calendar-gear"></i> Gérer les Jours
+      </button>
+      <button onclick="openEventForm()" class="bg-brand-orange hover:bg-brand-darkOrange text-white px-2.5 py-1 rounded text-[11px] font-bold">
+        <i class="fa-solid fa-plus"></i> Ajouter un Événement
+      </button>
+      <button onclick="exportJSON()" class="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded text-[11px]">
+        <i class="fa-solid fa-download"></i> Exporter
+      </button>
+      <button onclick="toggleAdminMode()" class="text-slate-400 hover:text-white ml-2 text-sm">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  </div>
+
   <!-- Header Mobile Dynamic -->
   <header class="bg-gradient-to-r from-brand-orange via-brand-darkOrange to-brand-gold text-white sticky top-0 z-40 shadow-lg">
-    <div class="max-w-md mx-auto px-4 py-3">
+    <div class="max-w-md mx-auto px-4 py-2.5">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <!-- Logo / Banner Icon -->
-          <div class="w-11 h-11 bg-white rounded-full flex items-center justify-center shadow-md p-1">
-            <svg viewBox="0 0 100 100" class="w-full h-full fill-brand-orange">
-              <circle cx="50" cy="20" r="8"/>
-              <path d="M50 32 C 40 45, 20 50, 20 70 C 20 85, 35 95, 50 95 C 65 95, 80 85, 80 70 C 80 50, 60 45, 50 32 Z" fill="#E87722"/>
-              <circle cx="30" cy="40" r="6" fill="#F4A21D"/>
-              <circle cx="70" cy="40" r="6" fill="#6CB33F"/>
-            </svg>
+          <!-- Logo du Congrès (Cliquable 5x pour déclencher l'admin) -->
+          <div onclick="handleLogoClick()" class="w-14 h-12 bg-white rounded-xl p-1 flex items-center justify-center shadow-md cursor-pointer hover:scale-105 transition">
+            <img src="2022_Logo Congrès.png" alt="Logo Congrès Les Feux Follets" class="max-h-full max-w-full object-contain" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'text-[10px] text-brand-orange font-bold text-center leading-tight\'>FEUX FOLLETS</span>';" />
           </div>
           <div>
-            <span class="text-xs font-semibold tracking-wider uppercase text-yellow-200 block">Congrès Annuel 2026</span>
-            <h1 class="text-lg font-bold leading-none tracking-tight">LES FEUX FOLLETS</h1>
+            <span class="text-[10px] font-bold tracking-wider uppercase text-yellow-200 block">Congrès Annuel 2026</span>
+            <h1 class="text-base font-bold leading-none tracking-tight">LES FEUX FOLLETS</h1>
           </div>
         </div>
-        <button id="bookmarkFilterBtn" onclick="toggleFavoritesOnly()" class="relative bg-white/20 hover:bg-white/30 backdrop-blur-md p-2 rounded-xl transition text-white flex items-center gap-1 text-xs font-semibold">
-          <i id="bookmarkGlobalIcon" class="fa-regular fa-bookmark text-base"></i>
-          <span id="favCountBadge" class="bg-brand-yellow text-slate-900 text-[10px] font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
-        </button>
+        
+        <div class="flex items-center gap-1.5">
+          <button id="bookmarkFilterBtn" onclick="toggleFavoritesOnly()" class="relative bg-white/20 hover:bg-white/30 backdrop-blur-md p-2 rounded-xl transition text-white flex items-center gap-1 text-xs font-semibold">
+            <i id="bookmarkGlobalIcon" class="fa-regular fa-bookmark text-base"></i>
+            <span id="favCountBadge" class="bg-brand-yellow text-slate-900 text-[10px] font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
+          </button>
+        </div>
       </div>
 
       <!-- Info Banner Location -->
-      <div class="mt-3 flex items-center justify-between text-xs bg-black/15 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/10">
+      <div class="mt-2.5 flex items-center justify-between text-xs bg-black/15 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-white/10">
         <div class="flex items-center gap-1.5">
           <i class="fa-solid fa-location-dot text-yellow-300"></i>
           <span class="font-medium">Saint-Jorioz, Lac d'Annecy</span>
@@ -138,37 +158,10 @@
   <!-- Main Content Container -->
   <main class="max-w-md mx-auto w-full px-4 py-2 flex-grow">
 
-    <!-- TAB 1: SAMEDI 17 OCTOBRE -->
-    <div id="tab-samedi" class="tab-content space-y-3">
-      <div class="bg-gradient-to-r from-brand-orange/10 to-brand-gold/10 p-3 rounded-xl border border-brand-orange/20 flex items-center justify-between">
-        <div>
-          <h2 class="font-title text-base font-bold text-brand-darkOrange">Samedi 17 Octobre 2026</h2>
-          <p class="text-xs text-slate-600">Accueil, tables rondes & soirée festive</p>
-        </div>
-        <span class="text-xs font-bold bg-brand-orange text-white px-2.5 py-1 rounded-lg">Jour 1</span>
-      </div>
+    <!-- DYNAMIC TAB PANELS (Rendered by JS based on Days list) -->
+    <div id="dynamicTabPanels"></div>
 
-      <div class="timeline-container space-y-3 relative before:absolute before:inset-0 before:left-3.5 before:w-0.5 before:bg-slate-200 before:z-0">
-        <!-- Event Cards will be rendered dynamically by JS -->
-      </div>
-    </div>
-
-    <!-- TAB 2: DIMANCHE 18 OCTOBRE -->
-    <div id="tab-dimanche" class="tab-content hidden space-y-3">
-      <div class="bg-gradient-to-r from-brand-blue/10 to-brand-green/10 p-3 rounded-xl border border-brand-blue/20 flex items-center justify-between">
-        <div>
-          <h2 class="font-title text-base font-bold text-brand-blue">Dimanche 18 Octobre 2026</h2>
-          <p class="text-xs text-slate-600">Assemblée générale & avancées scientifiques</p>
-        </div>
-        <span class="text-xs font-bold bg-brand-blue text-white px-2.5 py-1 rounded-lg">Jour 2</span>
-      </div>
-
-      <div class="timeline-container space-y-3 relative before:absolute before:inset-0 before:left-3.5 before:w-0.5 before:bg-slate-200 before:z-0">
-        <!-- Event Cards rendered dynamically -->
-      </div>
-    </div>
-
-    <!-- TAB 3: INFOS, LIVRES & T-SHIRTS -->
+    <!-- TAB: INFOS, LIVRES & T-SHIRTS -->
     <div id="tab-infos" class="tab-content hidden space-y-4">
       
       <!-- Card Livre Claire Hauw -->
@@ -248,25 +241,14 @@
 
   </main>
 
-  <!-- Bottom Navigation Bar (App style) -->
-  <nav class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-lg border-t border-slate-200 z-50 shadow-lg">
-    <div class="max-w-md mx-auto flex items-center justify-around py-2">
-      <button onclick="switchTab('samedi')" id="nav-samedi" class="nav-btn active flex flex-col items-center gap-1 text-brand-orange transition">
-        <i class="fa-solid fa-calendar-day text-lg"></i>
-        <span class="text-[11px] font-bold">Samedi 17</span>
-      </button>
-      <button onclick="switchTab('dimanche')" id="nav-dimanche" class="nav-btn flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 transition">
-        <i class="fa-solid fa-calendar-days text-lg"></i>
-        <span class="text-[11px] font-bold">Dimanche 18</span>
-      </button>
-      <button onclick="switchTab('infos')" id="nav-infos" class="nav-btn flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 transition">
-        <i class="fa-solid fa-circle-info text-lg"></i>
-        <span class="text-[11px] font-bold">Infos & Stands</span>
-      </button>
+  <!-- Bottom Navigation Bar Dynamic -->
+  <nav class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-lg border-t border-slate-200 z-40 shadow-lg">
+    <div id="bottomNavContainer" class="max-w-md mx-auto flex items-center justify-around py-2">
+      <!-- Tabs items rendered by JS -->
     </div>
   </nav>
 
-  <!-- Detail Modal -->
+  <!-- Event Detail Modal -->
   <div id="eventModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 opacity-0 pointer-events-none transition-opacity duration-300">
     <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl max-h-[85vh] overflow-y-auto p-5 shadow-2xl transform translate-y-full sm:translate-y-0 transition-transform duration-300">
       
@@ -314,10 +296,98 @@
     </div>
   </div>
 
+  <!-- ADMIN MODAL: Event Form -->
+  <div id="adminEventModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity">
+    <div class="bg-white w-full max-w-md rounded-2xl p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b pb-3 mb-3">
+        <h3 id="adminFormTitle" class="font-title text-base font-bold text-slate-800">Ajouter / Modifier un événement</h3>
+        <button onclick="closeEventForm()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <form id="eventForm" onsubmit="saveEvent(event)" class="space-y-3 text-xs">
+        <input type="hidden" id="editEventId" value="">
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">Jour du Congrès</label>
+          <select id="formDay" class="w-full p-2 border rounded-xl bg-slate-50 font-semibold text-slate-800" required></select>
+        </div>
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">Titre de l'événement</label>
+          <input type="text" id="formTitle" class="w-full p-2 border rounded-xl" required placeholder="Ex: Conférence Scientifique">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Horaire</label>
+            <input type="text" id="formTime" class="w-full p-2 border rounded-xl" required placeholder="Ex: 10h00 - 11h30">
+          </div>
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Catégorie</label>
+            <select id="formCategory" class="w-full p-2 border rounded-xl bg-slate-50">
+              <option value="Table ronde">Table ronde</option>
+              <option value="Assemblée">Assemblée</option>
+              <option value="Activité">Activité</option>
+              <option value="Convivialité">Convivialité</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">Lieu / Salle</label>
+          <input type="text" id="formLocation" class="w-full p-2 border rounded-xl" required placeholder="Ex: Salle plénière">
+        </div>
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">Description</label>
+          <textarea id="formDescription" rows="2" class="w-full p-2 border rounded-xl" placeholder="Présentation synthétique..."></textarea>
+        </div>
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">Détails / Points abordés (1 par ligne)</label>
+          <textarea id="formSubItems" rows="3" class="w-full p-2 border rounded-xl" placeholder="- Point 1&#10;- Point 2"></textarea>
+        </div>
+        <div class="pt-2 flex justify-end gap-2">
+          <button type="button" onclick="closeEventForm()" class="px-4 py-2 border rounded-xl font-bold">Annuler</button>
+          <button type="submit" class="px-4 py-2 bg-brand-orange text-white font-bold rounded-xl hover:bg-brand-darkOrange">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ADMIN MODAL: Manage Days -->
+  <div id="adminDaysModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity">
+    <div class="bg-white w-full max-w-md rounded-2xl p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b pb-3 mb-3">
+        <h3 class="font-title text-base font-bold text-slate-800">Gérer les Jours & Filtres du Congrès</h3>
+        <button onclick="closeManageDaysModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      
+      <div class="space-y-3 text-xs">
+        <div id="daysListContainer" class="space-y-2"></div>
+
+        <div class="border-t pt-3 mt-3">
+          <h4 class="font-bold text-slate-800 mb-2">Ajouter une nouvelle journée</h4>
+          <div class="space-y-2">
+            <input type="text" id="newDayId" placeholder="Identifiant unique (ex: vendredi)" class="w-full p-2 border rounded-xl">
+            <input type="text" id="newDayLabel" placeholder="Titre de l'onglet (ex: Vendredi 16)" class="w-full p-2 border rounded-xl">
+            <input type="text" id="newDayFullTitle" placeholder="Titre complet (ex: Vendredi 16 Octobre 2026)" class="w-full p-2 border rounded-xl">
+            <input type="text" id="newDaySub" placeholder="Sous-titre (ex: Accueil des participants)" class="w-full p-2 border rounded-xl">
+            <button onclick="addDay()" class="w-full py-2 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700">Ajouter ce jour</button>
+          </div>
+        </div>
+
+        <div class="border-t pt-3 flex justify-between">
+          <button onclick="resetDataToDefault()" class="text-red-600 font-bold hover:underline">Réinitialiser aux données d'origine</button>
+          <button onclick="closeManageDaysModal()" class="px-4 py-2 bg-slate-800 text-white font-bold rounded-xl">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- JavaScript App Logic -->
   <script>
-    // Data representation of the Congress Program
-    const eventsData = [
+    // Initial Default Days Configuration
+    const defaultDays = [
+      { id: 'samedi', label: 'Samedi 17', title: 'Samedi 17 Octobre 2026', subtitle: 'Accueil, tables rondes & soirée festive', badge: 'Jour 1', theme: 'orange' },
+      { id: 'dimanche', label: 'Dimanche 18', title: 'Dimanche 18 Octobre 2026', subtitle: 'Assemblée générale & avancées scientifiques', badge: 'Jour 2', theme: 'blue' }
+    ];
+
+    // Initial Default Events Data
+    const defaultEvents = [
       // SAMEDI 17 OCTOBRE
       {
         id: "s1",
@@ -481,16 +551,21 @@
       }
     ];
 
-    // App State
-    let currentTab = 'samedi';
+    // State Variables
+    let daysConfig = JSON.parse(localStorage.getItem('feux_follets_days') || JSON.stringify(defaultDays));
+    let eventsData = JSON.parse(localStorage.getItem('feux_follets_events') || JSON.stringify(defaultEvents));
+    let currentTab = daysConfig[0] ? daysConfig[0].id : 'samedi';
     let currentCategory = 'all';
     let searchQuery = '';
     let favorites = JSON.parse(localStorage.getItem('feux_follets_favs') || '[]');
     let favoritesOnly = false;
     let selectedEventId = null;
+    let isAdminMode = false;
+    let logoClickCounter = 0;
 
-    // Initialize App
+    // App Initialization
     document.addEventListener('DOMContentLoaded', () => {
+      initNavigation();
       renderEvents();
       updateFavBadge();
       initCountdown();
@@ -500,14 +575,88 @@
         document.getElementById('clearSearch').classList.toggle('hidden', searchQuery === '');
         renderEvents();
       });
+
+      // Shortcut: Ctrl + Shift + A (ou Cmd + Shift + A) pour l'Admin Mode
+      document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'a') {
+          e.preventDefault();
+          toggleAdminMode();
+        }
+      });
     });
+
+    // Secret 5-Tap on Logo
+    function handleLogoClick() {
+      logoClickCounter++;
+      if (logoClickCounter >= 5) {
+        toggleAdminMode();
+        logoClickCounter = 0;
+      }
+      setTimeout(() => logoClickCounter = 0, 3000);
+    }
+
+    // Toggle Admin Mode
+    function toggleAdminMode() {
+      isAdminMode = !isAdminMode;
+      document.getElementById('adminBanner').classList.toggle('hidden', !isAdminMode);
+      renderEvents();
+    }
+
+    // Dynamic Navigation & Tabs Rendering
+    function initNavigation() {
+      const navContainer = document.getElementById('bottomNavContainer');
+      const panelsContainer = document.getElementById('dynamicTabPanels');
+
+      // Nav Buttons
+      let navHTML = daysConfig.map(day => `
+        <button onclick="switchTab('${day.id}')" id="nav-${day.id}" class="nav-btn flex flex-col items-center gap-1 ${currentTab === day.id ? 'text-brand-orange' : 'text-slate-400'} hover:text-slate-600 transition">
+          <i class="fa-solid fa-calendar-day text-lg"></i>
+          <span class="text-[11px] font-bold">${day.label}</span>
+        </button>
+      `).join('');
+
+      navHTML += `
+        <button onclick="switchTab('infos')" id="nav-infos" class="nav-btn flex flex-col items-center gap-1 ${currentTab === 'infos' ? 'text-brand-orange' : 'text-slate-400'} hover:text-slate-600 transition">
+          <i class="fa-solid fa-circle-info text-lg"></i>
+          <span class="text-[11px] font-bold">Infos & Stands</span>
+        </button>
+      `;
+
+      navContainer.innerHTML = navHTML;
+
+      // Tab Panels
+      panelsContainer.innerHTML = daysConfig.map(day => {
+        const isThemeOrange = day.theme === 'orange';
+        const bgGrad = isThemeOrange ? 'from-brand-orange/10 to-brand-gold/10' : 'from-brand-blue/10 to-brand-green/10';
+        const borderCol = isThemeOrange ? 'border-brand-orange/20' : 'border-brand-blue/20';
+        const textCol = isThemeOrange ? 'text-brand-darkOrange' : 'text-brand-blue';
+        const badgeBg = isThemeOrange ? 'bg-brand-orange' : 'bg-brand-blue';
+
+        return `
+          <div id="tab-${day.id}" class="tab-content ${currentTab === day.id ? '' : 'hidden'} space-y-3">
+            <div class="bg-gradient-to-r ${bgGrad} p-3 rounded-xl border ${borderCol} flex items-center justify-between">
+              <div>
+                <h2 class="font-title text-base font-bold ${textCol}">${day.title}</h2>
+                <p class="text-xs text-slate-600">${day.subtitle || ''}</p>
+              </div>
+              <span class="text-xs font-bold ${badgeBg} text-white px-2.5 py-1 rounded-lg">${day.badge || 'Jour'}</span>
+            </div>
+
+            <div class="timeline-container space-y-3 relative before:absolute before:inset-0 before:left-3.5 before:w-0.5 before:bg-slate-200 before:z-0">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
 
     // Switch Tabs
     function switchTab(tab) {
       currentTab = tab;
       
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-      document.getElementById(`tab-${tab}`).classList.remove('hidden');
+      const activePanel = document.getElementById(`tab-${tab}`);
+      if (activePanel) activePanel.classList.remove('hidden');
 
       document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.classList.remove('text-brand-orange');
@@ -515,8 +664,10 @@
       });
 
       const activeBtn = document.getElementById(`nav-${tab}`);
-      activeBtn.classList.remove('text-slate-400');
-      activeBtn.classList.add('text-brand-orange');
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-400');
+        activeBtn.classList.add('text-brand-orange');
+      }
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -588,18 +739,16 @@
 
     // Render Event Cards
     function renderEvents() {
-      ['samedi', 'dimanche'].forEach(day => {
-        const container = document.querySelector(`#tab-${day} .timeline-container`);
+      daysConfig.forEach(day => {
+        const container = document.querySelector(`#tab-${day.id} .timeline-container`);
         if (!container) return;
 
-        let filtered = eventsData.filter(e => e.day === day);
+        let filtered = eventsData.filter(e => e.day === day.id);
 
-        // Filter by Category
         if (currentCategory !== 'all') {
           filtered = filtered.filter(e => e.category === currentCategory);
         }
 
-        // Filter by Search Query
         if (searchQuery) {
           filtered = filtered.filter(e => 
             e.title.toLowerCase().includes(searchQuery) ||
@@ -609,7 +758,6 @@
           );
         }
 
-        // Filter by Favorites Only
         if (favoritesOnly) {
           filtered = filtered.filter(e => favorites.includes(e.id));
         }
@@ -626,14 +774,27 @@
 
         container.innerHTML = filtered.map(item => {
           const isFav = favorites.includes(item.id);
+          const badgeClass = getBadgeColor(item.category);
+
           return `
             <div onclick="openModal('${item.id}')" class="relative z-10 bg-white rounded-2xl p-3.5 shadow-sm border border-slate-200/80 active:scale-[0.99] transition cursor-pointer hover:border-brand-orange/40">
+              
+              ${isAdminMode ? `
+                <div class="mb-2 pb-2 border-b flex justify-between items-center text-xs bg-slate-900 text-white p-1.5 -mx-3.5 -mt-3.5 rounded-t-2xl">
+                  <span class="font-mono text-[10px] text-amber-400">ID: ${item.id}</span>
+                  <div class="flex gap-2">
+                    <button onclick="editEvent('${item.id}', event)" class="bg-blue-600 hover:bg-blue-500 px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-pen"></i> Modifier</button>
+                    <button onclick="deleteEvent('${item.id}', event)" class="bg-red-600 hover:bg-red-500 px-2 py-0.5 rounded text-[10px]"><i class="fa-solid fa-trash"></i> Suppr.</button>
+                  </div>
+                </div>
+              ` : ''}
+
               <div class="flex items-start justify-between gap-2">
                 <div class="flex items-center gap-2">
                   <span class="text-xs font-bold text-brand-orange bg-brand-lightOrange px-2 py-0.5 rounded-md flex items-center gap-1">
                     <i class="fa-regular fa-clock text-[10px]"></i> ${item.time}
                   </span>
-                  <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md ${item.badgeColor}">
+                  <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md ${badgeClass}">
                     ${item.category}
                   </span>
                 </div>
@@ -659,6 +820,16 @@
       });
     }
 
+    function getBadgeColor(cat) {
+      switch(cat) {
+        case 'Table ronde': return 'bg-purple-100 text-purple-800';
+        case 'Assemblée': return 'bg-brand-blueLight text-brand-blue';
+        case 'Activité': return 'bg-emerald-100 text-emerald-800';
+        case 'Convivialité': return 'bg-amber-100 text-amber-800';
+        default: return 'bg-slate-100 text-slate-700';
+      }
+    }
+
     // Modal Details logic
     function openModal(id) {
       const item = eventsData.find(e => e.id === id);
@@ -669,8 +840,8 @@
       document.getElementById('modalTime').textContent = item.time;
       document.getElementById('modalLocation').textContent = item.location;
       document.getElementById('modalCategory').textContent = item.category;
-      document.getElementById('modalCategory').className = `text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md ${item.badgeColor}`;
-      document.getElementById('modalDescription').textContent = item.description;
+      document.getElementById('modalCategory').className = `text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md ${getBadgeColor(item.category)}`;
+      document.getElementById('modalDescription').textContent = item.description || 'Aucune description spécifique.';
 
       const subContainer = document.getElementById('modalSubItems');
       const subList = document.getElementById('modalSubList');
@@ -717,6 +888,178 @@
       }
     }
 
+    // --- ADMIN ACTIONS --- //
+
+    function openEventForm(eventId = null) {
+      const daySelect = document.getElementById('formDay');
+      daySelect.innerHTML = daysConfig.map(d => `<option value="${d.id}">${d.title}</option>`).join('');
+
+      if (eventId) {
+        const item = eventsData.find(e => e.id === eventId);
+        if (item) {
+          document.getElementById('editEventId').value = item.id;
+          document.getElementById('formDay').value = item.day;
+          document.getElementById('formTitle').value = item.title;
+          document.getElementById('formTime').value = item.time;
+          document.getElementById('formCategory').value = item.category;
+          document.getElementById('formLocation').value = item.location;
+          document.getElementById('formDescription').value = item.description || '';
+          document.getElementById('formSubItems').value = item.subItems ? item.subItems.join('\n') : '';
+          document.getElementById('adminFormTitle').textContent = "Modifier l'événement";
+        }
+      } else {
+        document.getElementById('editEventId').value = '';
+        document.getElementById('eventForm').reset();
+        document.getElementById('adminFormTitle').textContent = "Ajouter un événement";
+      }
+
+      const modal = document.getElementById('adminEventModal');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function closeEventForm() {
+      const modal = document.getElementById('adminEventModal');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    function saveEvent(e) {
+      e.preventDefault();
+      const editId = document.getElementById('editEventId').value;
+      const day = document.getElementById('formDay').value;
+      const title = document.getElementById('formTitle').value;
+      const time = document.getElementById('formTime').value;
+      const category = document.getElementById('formCategory').value;
+      const location = document.getElementById('formLocation').value;
+      const description = document.getElementById('formDescription').value;
+      const subItemsRaw = document.getElementById('formSubItems').value;
+
+      const subItems = subItemsRaw.split('\n').map(s => s.replace(/^- /, '').trim()).filter(s => s !== '');
+
+      if (editId) {
+        const idx = eventsData.findIndex(item => item.id === editId);
+        if (idx !== -1) {
+          eventsData[idx] = { ...eventsData[idx], day, title, time, category, location, description, subItems };
+        }
+      } else {
+        const newId = 'evt_' + Date.now();
+        eventsData.push({ id: newId, day, title, time, category, location, description, subItems });
+      }
+
+      localStorage.setItem('feux_follets_events', JSON.stringify(eventsData));
+      closeEventForm();
+      renderEvents();
+    }
+
+    function editEvent(id, e) {
+      e.stopPropagation();
+      openEventForm(id);
+    }
+
+    function deleteEvent(id, e) {
+      e.stopPropagation();
+      if (confirm('Êtes-vous sûr de vouloir supprimer cet événement ?')) {
+        eventsData = eventsData.filter(item => item.id !== id);
+        localStorage.setItem('feux_follets_events', JSON.stringify(eventsData));
+        renderEvents();
+      }
+    }
+
+    // Days Management Modal
+    function openManageDaysModal() {
+      renderDaysList();
+      const modal = document.getElementById('adminDaysModal');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function closeManageDaysModal() {
+      const modal = document.getElementById('adminDaysModal');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    function renderDaysList() {
+      const container = document.getElementById('daysListContainer');
+      container.innerHTML = daysConfig.map(d => `
+        <div class="flex items-center justify-between p-2 bg-slate-100 rounded-xl">
+          <div>
+            <div class="font-bold text-slate-800">${d.title}</div>
+            <div class="text-[10px] text-slate-500">ID: ${d.id} | Onglet: ${d.label}</div>
+          </div>
+          <button onclick="deleteDay('${d.id}')" class="text-red-500 hover:text-red-700 px-2 py-1"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      `).join('');
+    }
+
+    function addDay() {
+      const id = document.getElementById('newDayId').value.trim().toLowerCase();
+      const label = document.getElementById('newDayLabel').value.trim();
+      const title = document.getElementById('newDayFullTitle').value.trim();
+      const subtitle = document.getElementById('newDaySub').value.trim();
+
+      if (!id || !label || !title) {
+        alert('Veuillez remplir au moins l\'identifiant, le label et le titre.');
+        return;
+      }
+
+      if (daysConfig.some(d => d.id === id)) {
+        alert('Un jour avec cet identifiant existe déjà !');
+        return;
+      }
+
+      daysConfig.push({ id, label, title, subtitle, badge: `Jour ${daysConfig.length + 1}`, theme: 'orange' });
+      localStorage.setItem('feux_follets_days', JSON.stringify(daysConfig));
+
+      document.getElementById('newDayId').value = '';
+      document.getElementById('newDayLabel').value = '';
+      document.getElementById('newDayFullTitle').value = '';
+      document.getElementById('newDaySub').value = '';
+
+      initNavigation();
+      renderDaysList();
+      renderEvents();
+    }
+
+    function deleteDay(id) {
+      if (daysConfig.length <= 1) {
+        alert('Vous devez conserver au moins un jour.');
+        return;
+      }
+      if (confirm(`Supprimer le jour "${id}" et ses événements associées ?`)) {
+        daysConfig = daysConfig.filter(d => d.id !== id);
+        eventsData = eventsData.filter(e => e.day !== id);
+        localStorage.setItem('feux_follets_days', JSON.stringify(daysConfig));
+        localStorage.setItem('feux_follets_events', JSON.stringify(eventsData));
+        
+        currentTab = daysConfig[0].id;
+        initNavigation();
+        renderDaysList();
+        renderEvents();
+      }
+    }
+
+    function resetDataToDefault() {
+      if (confirm('Réinitialiser toutes les données aux valeurs d\'origine du congrès ?')) {
+        localStorage.removeItem('feux_follets_days');
+        localStorage.removeItem('feux_follets_events');
+        daysConfig = JSON.parse(JSON.stringify(defaultDays));
+        eventsData = JSON.parse(JSON.stringify(defaultEvents));
+        currentTab = daysConfig[0].id;
+        initNavigation();
+        closeManageDaysModal();
+        renderEvents();
+      }
+    }
+
+    function exportJSON() {
+      const exportObj = { days: daysConfig, events: eventsData };
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "programme_feux_follets_2026.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
     // Countdown logic
     function initCountdown() {
       const targetDate = new Date('2026-10-17T10:00:00').getTime();
@@ -755,4 +1098,3 @@
   </script>
 </body>
 </html>
-```eof
